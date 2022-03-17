@@ -5,7 +5,7 @@ This will list courses from the same category as the course that it is executed 
 
 It returns a hyperlinked list of these courses containing a figure showing the course image, full name and shortname. If the course uses completions, a checkmark will be rendered if the unit has been completed by the user.
 
-It proxies the course hyperlink through a file called `open.php` which sets the url of page the filter was rendered on as `$SESSION->coursehome`, then redirects to the requested course homepage. You could author your theme or other similar plugin to access this session variable to create a link back to the page that rendered this unit list. 
+It proxies the course hyperlink through a file called `open.php` which s1ets the url of page the filter was rendered on as `$SESSION->coursehome`, then redirects to the requested course homepage. You could author your theme or other similar plugin to access this session variable to create a link back to the page that rendered this unit list. 
 
 ### Sample output
 
@@ -22,7 +22,7 @@ It proxies the course hyperlink through a file called `open.php` which sets the 
 
 ### Sample coursehome renderer
 
-![screenshot](screenshot.jpg)
+![screenshot](sreenshot.jpg)
 
 Though not part of this plugins code explitly, you could use a function to render a link back to the `coursehome` value set by this plugin. There is some sample code over at https://gist.github.com/frumbert/221536dac8f65a5f853b939873dbba24
 
