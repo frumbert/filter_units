@@ -24,7 +24,8 @@
  */
 
 defined('MOODLE_INTERNAL') || die();
-require_once ($CFG->dirroot . '/course/lib.php');
+require_once($CFG->dirroot . '/course/lib.php');
+require_once($CFG->libdir . '/completionlib.php');
 
 class filter_units extends moodle_text_filter {
 
@@ -61,7 +62,7 @@ class filter_units extends moodle_text_filter {
     }
 
     static function get_units($pool, $current_course, $attrib_value) {
-    global $CFG, $PAGE;
+    global $CFG, $PAGE, $USER, $OUTPUT;
 
         // filter the list of courses to just those that match the unittype value
         $courses = course_filter_courses_by_customfield($pool, 'unittype', $attrib_value);
@@ -82,6 +83,15 @@ class filter_units extends moodle_text_filter {
                 }
             }
 
+            $is_completed = false;
+            $info = new completion_info($course);
+            if (completion_info::is_enabled_for_site() && $info->is_enabled()) {
+                if ($info->is_course_complete($USER->id)) {
+                    $is_completed = true;
+                }
+            }
+
+
             // draw a figure / figcaption for the course
             $html[] = \html_writer::start_tag('figure', ['class' => 'coursebox']);
             $link = new \moodle_url('/course/view.php', array('id' => $course->id));
@@ -92,6 +102,9 @@ class filter_units extends moodle_text_filter {
             $html[] = \html_writer::tag('span', \html_writer::link($url, $course->shortname), ['class' => 'course-id']);
             $html[] = \html_writer::tag('span', \html_writer::link($url, $course->fullname), ['class' => 'course-title']);
             $html[] = \html_writer::end_tag('figcaption');
+            if ($is_completed) {
+                $html[] = \html_writer::tag('span', $OUTPUT->pix_icon('t/check',get_string('complete')), ['class' => 'completed']);
+            }
             $html[] = \html_writer::end_tag('figure');
 
         }
