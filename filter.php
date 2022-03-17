@@ -53,7 +53,7 @@ class filter_units extends moodle_text_filter {
         // do the replacements
         foreach ($identifiers as $value => $label) {
             if (stripos($text, "[[units::{$label}]]") !== false) {
-                $html = filter_units::get_units($pool, $current, $value);
+                $html = filter_units::get_units($pool, $current, $value, $label);
                 $text = str_ireplace("[[units::{$label}]]", $html, $text);
             }
         }
@@ -61,7 +61,7 @@ class filter_units extends moodle_text_filter {
         return $text;
     }
 
-    static function get_units($pool, $current_course, $attrib_value) {
+    static function get_units($pool, $current_course, $attrib_value, $attrib_label = '') {
     global $CFG, $PAGE, $USER, $OUTPUT;
 
         // filter the list of courses to just those that match the unittype value
@@ -93,7 +93,7 @@ class filter_units extends moodle_text_filter {
 
 
             // draw a figure / figcaption for the course
-            $html[] = \html_writer::start_tag('figure', ['class' => 'coursebox']);
+            $html[] = \html_writer::start_tag('figure', ['class' => 'coursebox '. strtolower($attrib_label)]);
             $link = new \moodle_url('/course/view.php', array('id' => $course->id));
             // proxy course link through an opener url that sets this page as the coursehome in the session
             $url = new \moodle_url('/filter/units/open.php', array('from' => $PAGE->url->out(), 'to' => $link->out(true)));
